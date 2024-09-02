@@ -4,8 +4,8 @@
  * @brief LCD screen 1602A driver header file
  * @version 0.1
  * @date 2024-09-02
- * 
- * 
+ *
+ *
  */
 
 #ifndef __1602_H
@@ -24,13 +24,13 @@ typedef unsigned int uint;
  * @param line1 第一行文字，ASCII
  * @param line2 第二行文字，ASCII
  */
-void lcd_print(uchar *line1, uchar *line2);
+void lcd_print(char *line1, char *line2);
 
 /**
  * @brief 接口：初始化LCD设置。用于主程序初始化阶段。
  *
  */
-void lcd_init();
+void lcd_init(void);
 
 // LCD 内部函数
 void write_cmd(uchar cmd);
@@ -39,6 +39,5 @@ void set_cursor(uchar x, uchar y);
 void clear();
 void delay(uint xms);
 void wait_busy();
-
 
 #endif

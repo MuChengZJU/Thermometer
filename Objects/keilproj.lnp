@@ -1,0 +1,5 @@
+".\Objects\lcd_1602.obj",
+".\Objects\main.obj",
+".\Objects\mlx90614.obj" 
+TO ".\Objects\keilproj" 
+PRINT(".\Listings\keilproj.m51") RAMSIZE(256) 

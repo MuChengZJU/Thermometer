@@ -1,0 +1,55 @@
+C51 COMPILER V9.54   MAIN                                                                  09/03/2024 00:43:01 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Program Files\Keil\C51\BIN\C51.EXE src\main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
+                    -.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          /**
+   2           * @file main.c
+   3           * @author MuChengZJU (MuChengZJU@qq.com)
+   4           * @brief Main program of Thermometer
+   5           * @version 0.1
+   6           * @date 2024-09-02
+   7           *
+   8           *
+   9           */
+  10          
+  11          #include <REG52.H>
+  12          #include "mlx90614.h"
+  13          #include "lcd_1602.h"
+  14          
+  15          int main(void)
+  16          {
+  17   1          // MCU Init
+  18   1          P0 = 0x00; // Clear P0, reset buzzer
+  19   1          // lcd_init(); // Initialize LCD
+  20   1          lcd_init();
+  21   1      
+  22   1          // Temperature Reading
+  23   1      
+  24   1          // LCD Print
+  25   1          lcd_print("Temperature:", "114.514 C");
+  26   1      
+  27   1          while (1); // Infinite loop
+  28   1      
+  29   1          return 0;
+  30   1      }
+*** WARNING C294 IN LINE 29 OF src\main.c: unreachable code
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     26    ----
+   CONSTANT SIZE    =     23    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
