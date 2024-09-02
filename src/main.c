@@ -24,6 +24,7 @@ int main(void)
     // LCD Print
     lcd_print("Temperature:", "114.514 C");
 
+
     while (1); // Infinite loop
 
     return 0;

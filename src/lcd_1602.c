@@ -11,9 +11,9 @@
 #include "lcd_1602.h"
 
 // 1602A的连接51的针脚
-sbit LCD_RS = P2 ^ 4;
-sbit LCD_RW = P2 ^ 5;
-sbit LCD_EN = P2 ^ 6;
+sbit LCD_RS = P3 ^ 4;
+sbit LCD_RW = P3 ^ 5;
+sbit LCD_EN = P3 ^ 6;
 
 // 1602A的数据总线D0~D7连接51的P1
 #define LCD_BUS P1 // 此处P1可根据情况修改(若P0，需写1高电平)
@@ -29,6 +29,14 @@ void lcd_print(uchar *line1, uchar *line2)
     write_cmd(0xc0); // 设置光标到第二行第一个字符位置
     for (i = 0; line2[i] != '\0'; i++) {
         write_data(line2[i]);
+    }
+
+    while (1)
+
+    {
+        write_cmd(0x18);
+
+        delay(200); // 移动速度，可自定
     }
 }
 
@@ -62,8 +70,8 @@ void delay(uint xms)
 {
     uint i, j;
     for (i = 0; i < xms; i++)
-        for (j = 0; j < 120; j++) // 这里120是一个经验值，根据晶振频率和机器周期计算得出的
-            ;                     // 空循环体，用于延时
+        for (j = 0; j < 1000; j++) // 这里120是一个经验值，根据晶振频率和机器周期计算得出的
+            ;                      // 空循环体，用于延时
 }
 
 void set_cursor(uchar x, uchar y)
