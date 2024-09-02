@@ -13,8 +13,23 @@
 
 #include <reg52.h>
 
+typedef unsigned char uchar;
+typedef unsigned int uint;
+
 // LCD 供主函数调用的接口函数
+
+/**
+ * @brief 接口：刷新并显示两行文字
+ *
+ * @param line1 第一行文字，ASCII
+ * @param line2 第二行文字，ASCII
+ */
 void lcd_print(uchar *line1, uchar *line2);
+
+/**
+ * @brief 接口：初始化LCD设置。用于主程序初始化阶段。
+ *
+ */
 void lcd_init();
 
 // LCD 内部函数

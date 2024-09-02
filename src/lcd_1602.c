@@ -10,9 +10,6 @@
 
 #include "lcd_1602.h"
 
-typedef unsigned char uchar;
-typedef unsigned int uint;
-
 // 1602A的连接51的针脚
 sbit LCD_RS = P2 ^ 4;
 sbit LCD_RW = P2 ^ 5;
@@ -21,12 +18,7 @@ sbit LCD_EN = P2 ^ 6;
 // 1602A的数据总线D0~D7连接51的P1
 #define LCD_BUS P1 // 此处P1可根据情况修改(若P0，需写1高电平)
 
-/**
- * @brief 接口：刷新并显示两行文字
- *
- * @param line1 第一行文字，ASCII
- * @param line2 第二行文字，ASCII
- */
+
 void lcd_print(uchar *line1, uchar *line2)
 {
     clear();          // 清屏
@@ -40,10 +32,6 @@ void lcd_print(uchar *line1, uchar *line2)
     }
 }
 
-/**
- * @brief 接口：初始化LCD设置。用于主程序初始化阶段。
- *
- */
 void lcd_init()
 {
     write_cmd(0x38); // 8位数据接口，2行显示，5*7点阵
