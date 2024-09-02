@@ -10,19 +10,18 @@
 
 #include "REG52.H"
 #include "mlx90614.h"
+#include "lcd_1602.h"
 
 int main (void)
 {
     // MCU Init
     P0 &= 0x00; // Clear P0, reset buzzer
-
+    lcd_init(); // Initialize LCD
 
     // Temperature Reading
-    float temp;
-    SMBus_Init();
-    while(1)
-    {
-        temp = SMBus_ReadTemp();
-    }
+
+    // LCD Print
+    lcd_print();
+
     return 0;
 }
