@@ -13,13 +13,16 @@
 
 #include <reg52.h>
 
-typedef unsigned char uchar;
-typedef unsigned int uint;
+// LCD 供主函数调用的接口函数
+void lcd_print(uchar *line1, uchar *line2);
+void lcd_init();
 
-void delay(uint ms);
-void lcd_write_com(uchar com);
-void lcd_init(void);
-void lcd_write_data(uchar date);
-void lcd_print(void);
+// LCD 内部函数
+void write_cmd(uchar cmd);
+void write_data(uchar dat);
+void set_cursor(uchar x, uchar y);
+void clear();
+void delay(uint xms);
+
 
 #endif

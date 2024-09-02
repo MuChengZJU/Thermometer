@@ -9,70 +9,107 @@
  */
 
 #include "lcd_1602.h"
-// #define uchar unsigned char
 
-// 待打印的字符集
-uchar code table0[] = "ZJU BME 2024";
-uchar code table1[] = "Temp: ";
+typedef unsigned char uchar;
+typedef unsigned int uint;
 
 // 1602A的连接51的针脚
-sbit rs = P2 ^ 4;
-sbit rw = P2 ^ 5;
-sbit en = P2 ^ 6;
+sbit LCD_RS = P2 ^ 4;
+sbit LCD_RW = P2 ^ 5;
+sbit LCD_EN = P2 ^ 6;
 
-// 1602A的数据线D0~D7连接51的P1
-#define LCD_DATA P1
+// 1602A的数据总线D0~D7连接51的P1
+#define LCD_BUS P1 // 此处P1可根据情况修改(若P0，需写1高电平)
 
-void delay(uint ms)
+/**
+ * @brief 接口：刷新并显示两行文字
+ *
+ * @param line1 第一行文字，ASCII
+ * @param line2 第二行文字，ASCII
+ */
+void lcd_print(uchar *line1, uchar *line2)
 {
-    uint x, y;
-    for (x = ms; x > 0; x--)
-        for (y = 110; y > 0; y--);
+    clear();          // 清屏
+    set_cursor(0, 0); // 设置光标到第一行第一个字符位置
+    for (uchar i = 0; line1[i] != '\0'; i++) {
+        write_data(line1[i]);
+    }
+    set_cursor(1, 0); // 设置光标到第二行第一个字符位置
+    for (uchar i = 0; line2[i] != '\0'; i++) {
+        write_data(line2[i]);
+    }
 }
 
-void lcd_write_com(uchar com)
-{
-    rs       = 0; //	写指令
-    LCD_DATA = com;
-    delay(5);
-    //	高脉冲瞬间读入
-    en = 1;
-    en = 0;
-}
-
+/**
+ * @brief 接口：初始化LCD设置。用于主程序初始化阶段。
+ *
+ */
 void lcd_init()
 {
-    rw = 0;
-    en = 0;
-    //	使能端为0，写指令
-    lcd_write_com(0x38); //	设置显示方式
-    lcd_write_com(0x0c); //	开显示，包括光标和闪烁
-    lcd_write_com(0x06); //	写一个字符后，地址指针自动加一
-    lcd_write_com(0x01); //	显示请0，数据指针清0
+    write_cmd(0x38); // 8位数据接口，2行显示，5*7点阵
+    write_cmd(0x0c); // 显示器开，光标关，光标闪烁关
+    write_cmd(0x06); // 光标右移，字符不动
+    write_cmd(0x01); // 清屏
 }
 
-void lcd_write_data(uchar date)
+void clear()
 {
-    rs       = 1;
-    LCD_DATA = date;
-    delay(5);
-    en = 1;
-    en = 0;
+    wait_busy();
+    write_cmd(0x01);
 }
 
-void lcd_print()
+void delay(uint xms)
 {
-    uchar num = 0;
-    // lcd_init();
-    lcd_write_com(0x80);
-    for (num = 0; num < 10; num++) {
-        lcd_write_data(table0[num]);
-        delay(5);
+    uint i, j;
+    for (i = 0; i < xms; i++)
+        for (j = 0; j < 120; j++) // 这里120是一个经验值，根据晶振频率和机器周期计算得出的
+            ;                     // 空循环体，用于延时
+}
+
+void set_cursor(uchar x, uchar y)
+{
+    uchar addr;
+    if (y == 0) {
+        addr = 0x00 + x;
+    } else {
+        addr = 0x40 + x;
     }
-    lcd_write_com(0x80 + 0x40);
-    for (num = 0; num < 11; num++) {
-        lcd_write_data(table1[num]);
-        delay(5);
-    }
-    while (1);
+    write_cmd(0x80 + addr);
+}
+
+void wait_busy()
+{
+    uchar busy;
+    // LCD_BUS = 0xff; // P0开漏需要
+    LCD_RS = 0;
+    LCD_RW = 1;
+    do {
+        LCD_EN = 1;
+        delay(1);
+        busy   = LCD_BUS;
+        LCD_EN = 0;
+    } while (busy & 0x80);
+    // LCD_BUS = 0x00; // P0开漏需要
+}
+
+void write_data(uchar data)
+{
+    wait_busy();
+    LCD_RS  = 1;
+    LCD_RW  = 0;
+    LCD_BUS = data;
+    LCD_EN  = 1;
+    delay(1);
+    LCD_EN = 0;
+}
+
+void write_cmd(uchar cmd)
+{
+    wait_busy();
+    LCD_RS  = 0;
+    LCD_RW  = 0;
+    LCD_BUS = cmd;
+    LCD_EN  = 1;
+    delay(1);
+    LCD_EN = 0;
 }
