@@ -38,6 +38,7 @@ void write_data(uchar dat);
 void set_cursor(uchar x, uchar y);
 void clear();
 void delay(uint xms);
+void wait_busy();
 
 
 #endif

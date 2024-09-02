@@ -21,16 +21,18 @@ sbit LCD_EN = P2 ^ 6;
 
 void lcd_print(uchar *line1, uchar *line2)
 {
+    uchar i; // 在函数开始处声明变量i
     clear();          // 清屏
     set_cursor(0, 0); // 设置光标到第一行第一个字符位置
-    for (uchar i = 0; line1[i] != '\0'; i++) {
+    for (i = 0; line1[i] != '\0'; i++) {
         write_data(line1[i]);
     }
     set_cursor(1, 0); // 设置光标到第二行第一个字符位置
-    for (uchar i = 0; line2[i] != '\0'; i++) {
+    for (i = 0; line2[i] != '\0'; i++) {
         write_data(line2[i]);
     }
 }
+
 
 void lcd_init()
 {
@@ -80,12 +82,12 @@ void wait_busy()
     // LCD_BUS = 0x00; // P0开漏需要
 }
 
-void write_data(uchar data)
+void write_data(uchar dat)
 {
     wait_busy();
     LCD_RS  = 1;
     LCD_RW  = 0;
-    LCD_BUS = data;
+    LCD_BUS = dat; // data is reserved word, so use dat.
     LCD_EN  = 1;
     delay(1);
     LCD_EN = 0;
