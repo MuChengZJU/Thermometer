@@ -11,10 +11,8 @@
 #ifndef __1602_H
 #define __1602_H
 
-#include <reg52.h>
+#include "utils.h"
 
-typedef unsigned char uchar;
-typedef unsigned int uint;
 
 // LCD 供主函数调用的接口函数
 
@@ -36,7 +34,6 @@ void lcd_init(void);
 void write_cmd(uchar cmd);
 void write_data(uchar dat);
 void clear();
-void delay(uint xms);
 void wait_busy();
 
 #endif

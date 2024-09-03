@@ -34,9 +34,9 @@ void lcd_print(char *line1, char *line2)
 
 void lcd_init()
 {
-    delay(15);       // 上电后等待15ms，等待LCD电源稳定
+    delay_ms(15);       // 上电后等待15ms，等待LCD电源稳定
     write_cmd(0x38); // 8位数据接口，2行显示，5*7点阵
-    delay(5);
+    delay_ms(5);
     write_cmd(0x0c); // 显示器开，光标关，光标闪烁关
     write_cmd(0x06); // 光标右移，字符不动
     write_cmd(0x01); // 清屏
@@ -46,16 +46,10 @@ void clear()
 {
     wait_busy();
     write_cmd(0x01);
-    delay(5);
+    delay_ms(5);
 }
 
-void delay(uint xms)
-{
-    uint i, j;
-    for (i = 0; i < xms; i++)
-        for (j = 0; j < 1000; j++) // 这里120是一个经验值，根据晶振频率和机器周期计算得出的
-            ;                      // 空循环体，用于延时
-}
+
 
 void wait_busy()
 {
@@ -65,7 +59,7 @@ void wait_busy()
     LCD_RW = 1;
     do {
         LCD_EN = 1;
-        delay(5);
+        delay_ms(5);
         busy   = LCD_BUS;
         LCD_EN = 0;
     } while (busy & 0x80);
@@ -81,10 +75,10 @@ void write_data(uchar dat)
     LCD_RW = 0;
 
     LCD_BUS = dat; // data is reserved word, so use dat.
-    delay(1);
+    delay_ms(1);
 
     LCD_EN = 1;
-    delay(5);
+    delay_ms(5);
     LCD_EN = 0;
 }
 
@@ -97,9 +91,9 @@ void write_cmd(uchar cmd)
     LCD_RW = 0;
 
     LCD_BUS = cmd;
-    delay(1);
+    delay_ms(1);
 
     LCD_EN = 1;
-    delay(5);
+    delay_ms(5);
     LCD_EN = 0;
 }

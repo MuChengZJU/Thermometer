@@ -9,33 +9,39 @@
  */
 
 #include <REG52.H>
+#include "utils.h"
 #include "lcd1602.h"
 #include "uart.h"
-
+#include "gy906.h"
 
 int main(void)
 {
-    int i;
     char line1[16] = "Temperature:";
     char line2[16] = "114.514 C";
+    uint temp = 0;
 
     // Initialize
-    P0 = 0x00; // Clear P0, reset buzzer
-    lcd_init(); // LCD Initialize
+    P0 = 0x00;   // Clear P0, reset buzzer
+    lcd_init();  // LCD Initialize
+    lcd_print(line1, line2);
     uart_init(); // UART Initialize
+    
 
     // Debug UART
     uart_println("Program Initialized Successfully!");
 
-    // Temperature Reading
+    // Main Loop
 
-    // LCD Print
-    for (i = 0; i < 100; i++) {
-
+    while (1)
+    {
+        // Temperature Reading
+        temp = read_ambient_temp();
+        temp2str(temp, line2);
         lcd_print(line1, line2);
+        uart_print("Temperature: ");
+        uart_println(line2);
+        delay_ms(1000);
     }
-
-    while (1); // Infinite loop
 
     return 0;
 }
