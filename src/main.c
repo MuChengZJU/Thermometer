@@ -10,22 +10,28 @@
 
 #include <REG52.H>
 #include "lcd1602.h"
+#include "uart.h"
+
 
 int main(void)
 {
     int i;
     char line1[16] = "Temperature:";
     char line2[16] = "114.514 C";
-    // MCU Init
+
+    // Initialize
     P0 = 0x00; // Clear P0, reset buzzer
-    // lcd_init(); // Initialize LCD
-    lcd_init();
+    lcd_init(); // LCD Initialize
+    uart_init(); // UART Initialize
+
+    // Debug UART
+    uart_println("Program Initialized Successfully!");
 
     // Temperature Reading
 
     // LCD Print
     for (i = 0; i < 100; i++) {
-        
+
         lcd_print(line1, line2);
     }
 
