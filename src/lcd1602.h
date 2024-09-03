@@ -1,5 +1,5 @@
 /**
- * @file lcd_1602.h
+ * @file lcd1602.h
  * @author MuChengZJU (MuChengZJU@qq.com)
  * @brief LCD screen 1602A driver header file
  * @version 0.1
@@ -35,7 +35,6 @@ void lcd_init(void);
 // LCD ÄÚ²¿º¯Êý
 void write_cmd(uchar cmd);
 void write_data(uchar dat);
-void set_cursor(uchar x, uchar y);
 void clear();
 void delay(uint xms);
 void wait_busy();

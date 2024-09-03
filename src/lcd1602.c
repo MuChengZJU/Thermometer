@@ -1,5 +1,5 @@
 /**
- * @file lcd_1602.c
+ * @file lcd1602.c
  * @author MuChengZJU (MuChengZJU@qq.com)
  * @brief LCD screen 1602A driver
  * @version 0.1
@@ -8,7 +8,7 @@
  *
  */
 
-#include "lcd_1602.h"
+#include "lcd1602.h"
 
 // 1602A的连接51的针脚
 sbit LCD_RS = P3 ^ 4;
@@ -18,7 +18,7 @@ sbit LCD_EN = P3 ^ 6;
 // 1602A的数据总线D0~D7连接51的P1
 #define LCD_BUS P1 // 此处P1可根据情况修改(若P0，需写1高电平)
 
-void lcd_print(uchar *line1, uchar *line2)
+void lcd_print(char *line1, char *line2)
 {
     uchar i;         // 在函数开始处声明变量i
     clear();         // 清屏
@@ -30,14 +30,6 @@ void lcd_print(uchar *line1, uchar *line2)
     for (i = 0; line2[i] != '\0'; i++) {
         write_data(line2[i]);
     }
-
-    while (1)
-
-    {
-        write_cmd(0x18);
-
-        delay(200); // 移动速度，可自定
-    }
 }
 
 void lcd_init()
@@ -48,15 +40,6 @@ void lcd_init()
     write_cmd(0x0c); // 显示器开，光标关，光标闪烁关
     write_cmd(0x06); // 光标右移，字符不动
     write_cmd(0x01); // 清屏
-
-    // write_cmd(0x39);
-    // write_cmd(0x08);
-    // write_cmd(0x01);
-    // write_cmd(0x06);
-    // delay(5);
-    // write_cmd(0x0c);
-    // write_cmd(0x14);
-    // write_cmd(12);
 }
 
 void clear()
@@ -72,17 +55,6 @@ void delay(uint xms)
     for (i = 0; i < xms; i++)
         for (j = 0; j < 1000; j++) // 这里120是一个经验值，根据晶振频率和机器周期计算得出的
             ;                      // 空循环体，用于延时
-}
-
-void set_cursor(uchar x, uchar y)
-{
-    uchar addr;
-    if (y == 0) {
-        addr = 0x00 + x;
-    } else {
-        addr = 0x40 + x;
-    }
-    write_cmd(0x80 + addr);
 }
 
 void wait_busy()

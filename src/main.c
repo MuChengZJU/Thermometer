@@ -9,11 +9,13 @@
  */
 
 #include <REG52.H>
-#include "mlx90614.h"
-#include "lcd_1602.h"
+#include "lcd1602.h"
 
 int main(void)
 {
+    int i;
+    char line1[16] = "Temperature:";
+    char line2[16] = "114.514 C";
     // MCU Init
     P0 = 0x00; // Clear P0, reset buzzer
     // lcd_init(); // Initialize LCD
@@ -22,8 +24,10 @@ int main(void)
     // Temperature Reading
 
     // LCD Print
-    lcd_print("Temperature:", "114.514 C");
-
+    for (i = 0; i < 100; i++) {
+        
+        lcd_print(line1, line2);
+    }
 
     while (1); // Infinite loop
 
