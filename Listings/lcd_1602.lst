@@ -31,7 +31,7 @@ line level    source
   21          void lcd_print(uchar *line1, uchar *line2)
   22          {
   23   1          uchar i;          // 在函数开始处声明变量i
-  24   1          clear();          // 清屏
+  24   1          lcd_clear();          // 清屏
   25   1          set_cursor(0, 0); // 设置光标到第一行第一个字符位置
   26   1          for (i = 0; line1[i] != '\0'; i++) {
   27   2              write_data(line1[i]);

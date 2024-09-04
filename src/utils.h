@@ -14,6 +14,8 @@
 #include <reg52.h>
 #include "intrins.h"
 
+#define DEGREE_SYMBOL 0xDF
+
 typedef unsigned char uchar;
 typedef unsigned int uint;
 

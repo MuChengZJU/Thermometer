@@ -21,7 +21,7 @@ sbit LCD_EN = P3 ^ 6;
 void lcd_print(char *line1, char *line2)
 {
     uchar i;         // 在函数开始处声明变量i
-    clear();         // 清屏
+    // lcd_clear();         // 清屏
     write_cmd(0x80); // 设置光标到第一行第一个字符位置
     for (i = 0; line1[i] != '\0'; i++) {
         write_data(line1[i]);
@@ -42,7 +42,7 @@ void lcd_init()
     write_cmd(0x01); // 清屏
 }
 
-void clear()
+void lcd_clear()
 {
     wait_busy();
     write_cmd(0x01);

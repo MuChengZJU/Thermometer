@@ -15,9 +15,11 @@
 #define GY906_TA    0x06 // TA Address in RAM
 #define GY906_TOBJ1 0x07 // TOBJ1 Address in RAM
 
-uint read_temp(uchar sensor)
+float read_temp(uchar sensor)
 {
     uchar temp_low, temp_high, pec, is_ack; // 0 for ACK, 1 for NACK
+    uint temp_bin;
+    float temp_float;
     start_bit();
     send_byte(GY906_ADDR << 1); // Slave Addr + Write
     is_ack = read_bit();
@@ -37,15 +39,17 @@ uint read_temp(uchar sensor)
     pec = read_byte();
     send_bit(0);
     stop_bit();
-    return (temp_high << 8) | temp_low;
+    temp_bin = (temp_high << 8) | temp_low;
+    temp_float = (float)temp_bin * 0.02 - 273.15;
+    return temp_float;
 }
-
 void float2str(float value, char *str)
 {
     int integerPart = (int)value;
     int decimalPart = (int)((value - integerPart) * 100);
 
-    sprintf(str, "%3d.%02d C", integerPart, decimalPart);
+    sprintf(str, "%3d.%02d  C", integerPart, decimalPart);
+    str[7] = DEGREE_SYMBOL;
 }
 void start_bit()
 {

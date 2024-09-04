@@ -14,29 +14,35 @@
 #include "uart.h"
 #include "gy906.h"
 
+#define TEMP_SENSOR 1 // 1 for TOBJ1, 0 for AMBIENT
+#define AVE_TIMES   10
+
 void main(void)
 {
     char line1[16] = "Temperature:";
-    char line2[16] = "114.514 C";
-    float temp     = 0;
+    char line2[16] = "114.514 .C";
+    float temp = 0;
+    int i      = 0;
+    line2[8]   = DEGREE_SYMBOL;
 
     // Initialize
     P0 = 0x00; // Clear P0, reset buzzer
     lcd_init();
     uart_init();
-    lcd_print("Sit back and relax", "STARTING .........");
-    lcd_print(line1, line2);
+    lcd_print("STARTING .........", "WELCOME!!!!!!");
     uart_println("Program Initialized Successfully!");
-
-    // Main Loop
+    lcd_clear();
 
     while (1) {
-        // Temperature Reading
-        float temp = (float)read_temp(1) * 0.02 - 273.15;
+        temp = 0;
+        for (i = 0; i < AVE_TIMES; i++) {
+            temp += read_temp(TEMP_SENSOR);
+        }
+        temp /= AVE_TIMES;
         float2str(temp, line2);
         lcd_print(line1, line2);
         uart_print("Temperature: ");
         uart_println(line2);
-        delay_ms(100);
+        delay1s();
     }
 }

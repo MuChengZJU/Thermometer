@@ -30,7 +30,11 @@ uchar read_byte(void);
 void send_bit(uchar bit_out);
 void send_byte(uchar dat_byte);
 
-uint read_temp(uchar sensor);
+
+// ½Ó¿Úº¯Êý
+float read_temp(uchar sensor);
+
 void float2str(float value, char *str);
+
 
 #endif

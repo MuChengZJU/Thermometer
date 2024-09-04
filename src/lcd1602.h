@@ -30,10 +30,11 @@ void lcd_print(char *line1, char *line2);
  */
 void lcd_init(void);
 
+void lcd_clear();
+
 // LCD ÄÚ²¿º¯Êý
 void write_cmd(uchar cmd);
 void write_data(uchar dat);
-void clear();
 void wait_busy();
 
 #endif
