@@ -80,6 +80,7 @@ void start_bit()
 
 void stop_bit()
 {
+    SDA = 0;
     SCL = 1;
     delay_us(5);
     SDA = 1;
@@ -88,6 +89,7 @@ void stop_bit()
 uchar read_bit(void) // Timeout_L > 27 ms
 {
     uchar bit_in;
+    SDA = 1; // 释放总线
     SCL = 1;
     delay_us(5);
     bit_in = SDA ? 1 : 0;
@@ -116,8 +118,8 @@ void send_bit(uchar bit_out)
     SCL = 1;
     delay_us(50);
     SCL = 0;
-    delay_us(5);
-    SDA = 1; // 释放总线
+    // delay_us(5);
+    // SDA = 1; // 释放总线
 }
 
 void send_byte(uchar dat_byte)
@@ -126,7 +128,7 @@ void send_byte(uchar dat_byte)
     uchar bit_out;
     for (i = 0; i < 8; i++) {
         bit_out = dat_byte & 0x80;
-        send_bit(bit_out?1:0);
+        send_bit(bit_out);
         delay_ms(30);
         dat_byte = dat_byte << 1;
     }
