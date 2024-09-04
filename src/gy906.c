@@ -9,6 +9,7 @@
  */
 
 #include "gy906.h"
+#include <STDIO.H>
 
 #define GY906_ADDR  0x5A // GY906 IIC Slave Address 地址
 #define GY906_TA    0x06 // TA Address in RAM
@@ -20,12 +21,11 @@ uint read_temp(uchar sensor)
     start_bit();
     send_byte(GY906_ADDR << 1); // Slave Addr + Write
     is_ack = read_bit();
-    // if (sensor) {
-    //     send_byte(GY906_TOBJ1); // Send RAM Address + Command
-    // } else {
-    //     send_byte(GY906_TA);
-    // }
-    send_byte(GY906_TOBJ1);
+    if (sensor) {
+        send_byte(GY906_TOBJ1); // Send RAM Address + Command
+    } else {
+        send_byte(GY906_TA);
+    }
     is_ack = read_bit();
     start_bit();
     send_byte((GY906_ADDR << 1) | 0x01); // Slave Addr + Read
@@ -40,35 +40,13 @@ uint read_temp(uchar sensor)
     return (temp_high << 8) | temp_low;
 }
 
-void temp2str(uint temp, char *str)
+void float2str(float value, char *str)
 {
-    char *ptr     = str;  // 指向字符串的指针
-    uint quotient = temp; // 商
-    char digit;           // 用于存储转换的数字字符
-    char *start = str;    // 字符串开始位置
-    char tempChar;
+    int integerPart = (int)value;
+    int decimalPart = (int)((value - integerPart) * 100);
 
-    // 循环处理，直到商为0
-    while (quotient != 0) {
-        digit  = quotient % 10; // 计算余数
-        *ptr++ = '0' + digit;   // 将余数转换为对应的字符并存储
-        quotient /= 10;         // 更新商
-    }
-
-    // 字符串反转，因为上面的计算会得到逆序的数字
-    *ptr = '\0'; // 字符串结束符
-    ptr--;       // 回到字符串的最后一个数字
-
-    // 反转字符串
-    while (start < ptr) {
-        tempChar = *start;
-        *start   = *ptr;
-        *ptr     = tempChar;
-        start++;
-        ptr--;
-    }
+    sprintf(str, "%3d.%02d C", integerPart, decimalPart);
 }
-
 void start_bit()
 {
     SDA = 1;

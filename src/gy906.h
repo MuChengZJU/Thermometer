@@ -32,6 +32,6 @@ void send_bit(uchar bit_out);
 void send_byte(uchar dat_byte);
 
 uint read_temp(uchar sensor);
-void temp2str(uint temp, char *str);
+void float2str(float value, char *str);
 
 #endif
