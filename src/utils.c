@@ -23,3 +23,18 @@ void delay_us(uint xus)
     while (xus--)
         ;
 }
+
+void delay_5us(void)
+{
+    _nop_();
+    _nop_();
+    _nop_();
+    _nop_();
+    _nop_();
+}
+
+void delay_10us(void)
+{
+    delay_5us();
+    delay_5us();
+}

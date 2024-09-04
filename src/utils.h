@@ -12,6 +12,7 @@
 #define __UTILS_H
 
 #include <reg52.h>
+#include "intrins.h"
 
 typedef unsigned char uchar;
 typedef unsigned int uint;
@@ -30,5 +31,9 @@ void delay_ms(uint xms);
  * @param xus 
  */
 void delay_us(uint xus);
+
+void delay_5us(void);
+void delay_10us(void);
+
 
 #endif

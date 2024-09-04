@@ -34,12 +34,12 @@ void main(void)
     {
         // Temperature Reading
         temp = read_temp(1);
-        // temp2str(temp, line2);
-        // lcd_print(line1, line2);
-        // uart_print("Temperature: ");
-        // uart_print_int(temp);
-        // uart_println(line2);
-        // delay_ms(1000);
+        temp2str(temp, line2);
+        lcd_print(line1, line2);
+        uart_print("Temperature: ");
+        uart_print_int(temp);
+        uart_println(line2);
+        delay_ms(1000);
     }
 
 }
