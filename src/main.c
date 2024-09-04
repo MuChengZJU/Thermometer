@@ -18,10 +18,10 @@ void main(void)
 {
     char line1[16] = "Temperature:";
     char line2[16] = "114.514 C";
-    float temp = 0;
+    float temp     = 0;
 
     // Initialize
-    P0 = 0x00;   // Clear P0, reset buzzer
+    P0 = 0x00; // Clear P0, reset buzzer
     lcd_init();
     uart_init();
     lcd_print("Sit back and relax", "STARTING .........");
@@ -30,15 +30,13 @@ void main(void)
 
     // Main Loop
 
-    while (1)
-    {
+    while (1) {
         // Temperature Reading
-        float temp = (float)read_temp(1)*0.02 - 273.15;
+        float temp = (float)read_temp(1) * 0.02 - 273.15;
         float2str(temp, line2);
         lcd_print(line1, line2);
         uart_print("Temperature: ");
         uart_println(line2);
         delay_ms(100);
     }
-
 }

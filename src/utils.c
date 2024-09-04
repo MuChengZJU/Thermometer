@@ -1,11 +1,11 @@
 /**
  * @file utils.c
  * @author MuChengZJU (MuChengZJU@qq.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-09-03
- * 
- * 
+ *
+ *
  */
 
 #include "utils.h"
@@ -18,10 +18,40 @@ void delay_ms(uint xms)
             ;                      // 空循环体，用于延时
 }
 
+void delay1ms()		//@11.0592MHz
+{
+	unsigned char i, j;
+
+	_nop_();
+	i = 2;
+	j = 199;
+	do
+	{
+		while (--j);
+	} while (--i);
+}
+
+void delay1s()		//@11.0592MHz
+{
+	unsigned char i, j, k;
+
+	_nop_();
+	i = 8;
+	j = 1;
+	k = 243;
+	do
+	{
+		do
+		{
+			while (--k);
+		} while (--j);
+	} while (--i);
+}
+
+
 void delay_us(uint xus)
 {
-    while (xus--)
-        ;
+    while (xus--);
 }
 
 void delay_5us(void)

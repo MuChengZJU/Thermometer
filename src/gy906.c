@@ -29,7 +29,7 @@ uint read_temp(uchar sensor)
     is_ack = read_bit();
     start_bit();
     send_byte((GY906_ADDR << 1) | 0x01); // Slave Addr + Read
-    is_ack        = read_bit();
+    is_ack   = read_bit();
     temp_low = read_byte();
     // send_bit(0);
     temp_high = read_byte();

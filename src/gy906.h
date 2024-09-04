@@ -4,15 +4,14 @@
  * @brief Temperature sensor GY906 driver header file
  * @version 0.1
  * @date 2024-09-03
- * 
- * 
+ *
+ *
  */
 
 #ifndef __GY906_H__
 #define __GY906_H__
 
 #include "utils.h"
-
 
 // 51 IIC 接口
 // 用于 GY906 温度传感器
