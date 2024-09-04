@@ -13,16 +13,5 @@
 
 #include "utils.h"
 
-// 51 IIC 接口
-// 用于 GY906 温度传感器
-sbit SDA = P2 ^ 0;
-sbit SCL = P2 ^ 1;
-
-void start_bit();
-void stop_bit();
-void read_bit(void);
-uchar read_byte(void);
-void send_bit(void);
-void send_byte(uchar dat_byte);
 
 #endif

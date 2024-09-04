@@ -14,7 +14,7 @@
 #include "uart.h"
 #include "gy906.h"
 
-int main(void)
+void main(void)
 {
     char line1[16] = "Temperature:";
     char line2[16] = "114.514 C";
@@ -22,12 +22,10 @@ int main(void)
 
     // Initialize
     P0 = 0x00;   // Clear P0, reset buzzer
-    lcd_init();  // LCD Initialize
+    lcd_init();
+    uart_init();
+    lcd_print("Sit back and relax", "STARTING .........");
     lcd_print(line1, line2);
-    uart_init(); // UART Initialize
-    
-
-    // Debug UART
     uart_println("Program Initialized Successfully!");
 
     // Main Loop
@@ -35,13 +33,13 @@ int main(void)
     while (1)
     {
         // Temperature Reading
-        temp = read_ambient_temp();
+        temp = read_temp(1);
         temp2str(temp, line2);
         lcd_print(line1, line2);
         uart_print("Temperature: ");
+        uart_print_int(temp);
         uart_println(line2);
-        delay_ms(1000);
+        // delay_ms(1000);
     }
 
-    return 0;
 }

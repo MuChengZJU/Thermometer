@@ -13,7 +13,25 @@
 
 #include "utils.h"
 
-uint read_ambient_temp(void);
+
+// 51 IIC 接口
+// 用于 GY906 温度传感器
+sbit SDA = P2 ^ 0;
+sbit SCL = P2 ^ 1;
+
+// // 用于 IIC 通信的标志位
+// // bdata uchar g_flag;
+// sbit g_bit_in = P2 ^ 3;
+// sbit g_bit_out = P2 ^ 4;
+
+void start_bit();
+void stop_bit();
+uchar read_bit(void);
+uchar read_byte(void);
+void send_bit(uchar bit_out);
+void send_byte(uchar dat_byte);
+
+uint read_temp(uchar sensor);
 void temp2str(uint temp, char *str);
 
 #endif
