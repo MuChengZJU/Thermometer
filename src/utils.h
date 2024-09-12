@@ -35,6 +35,7 @@ void delay_us(uint xus);
 
 void delay1ms();
 void delay1s();
+void delay500ms();
 void delay_5us(void);
 void delay_10us(void);
 

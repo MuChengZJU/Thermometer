@@ -48,7 +48,7 @@ void float2str(float value, char *str)
     int integerPart = (int)value;
     int decimalPart = (int)((value - integerPart) * 100);
 
-    sprintf(str, "%3d.%02d  C", integerPart, decimalPart);
+    sprintf(str, "%3d.%02d  C      ", integerPart, decimalPart);
     str[7] = DEGREE_SYMBOL;
 }
 void start_bit()

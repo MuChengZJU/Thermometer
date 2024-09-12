@@ -17,12 +17,12 @@
 #define TEMP_SENSOR   1 // 1 for TOBJ1, 0 for AMBIENT
 #define AVE_TIMES     10
 #define BUZZER_VOLUME 100
-#define TL0_RELOAD    0xF0
-#define TH0_RELOAD    0xD8
+#define TL0_RELOAD    0x00
+#define TH0_RELOAD    0xDC
 
 uint g_timer0_cnt     = 0;
 uint g_timer0_cnt_max = 100;
-sbit BUZZER = P0 ^ 0;
+uchar g_SMBus_flag    = 0;
 
 void Timer0_Init(void) // 10毫秒@11.0592MHz
 {
@@ -50,10 +50,10 @@ void Timer0_ISR(void) interrupt 1
 void main(void)
 {
     // Variables
-    char line1[16]   = "Temperature:";
-    char line2[16]   = "114.514 .C";
-    float temp       = 0;
-    int i            = 0;
+    char line1[16] = "Temperature:";
+    char line2[16] = "114.514 .C";
+    float temp, sum = 0;
+    int i = 0;
 
     // Initialize
     line2[8] = DEGREE_SYMBOL;
@@ -61,7 +61,7 @@ void main(void)
     lcd_init();
     uart_init();
     Timer0_Init(); // 初始化定时器0
-    EA = 1;        // 使能全局中断
+    EA  = 1;       // 使能全局中断
     ET0 = 1;       // 设置INT0中断类型
 
     // Start Information
@@ -72,11 +72,22 @@ void main(void)
     // Main Loop
     while (1) {
         // 测温并显示
-        temp = 0;
+        sum = 0;
         for (i = 0; i < AVE_TIMES; i++) {
-            temp += read_temp(TEMP_SENSOR);
+            // g_SMBus_flag = 1;
+            ET0  = 0;
+            temp = read_temp(TEMP_SENSOR);
+            ET0  = 1;
+            TH0  = TH0_RELOAD;
+            TL0  = TL0_RELOAD;
+            // g_SMBus_flag = 0;
+            if (((temp - sum / i) > 10) && i > 0) {
+                i--;
+            } else {
+                sum += temp;
+            }
         }
-        temp /= AVE_TIMES;
+        temp = sum / AVE_TIMES;
         float2str(temp, line2);
         lcd_print(line1, line2);
 
@@ -95,6 +106,6 @@ void main(void)
             g_timer0_cnt_max = 1;
         }
 
-        delay1s();
+        delay500ms();
     }
 }
